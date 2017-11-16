@@ -4,6 +4,7 @@ const BASEURL = "http://phpmeetup-server.dev/api/";
 new Vue({
   el: '#app',
   data: {
+    loading: false,
     userform: {
       email: '',
       password: ''
@@ -13,28 +14,7 @@ new Vue({
       name: '',
       quote: ''
     },
-    quotes: [
-      {
-        name: 'Jeff Atwood',
-        quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
-      },
-      {
-        name: 'Jeff Atwood',
-        quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
-      },
-      {
-        name: 'Jeff Atwood',
-        quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
-      },
-      {
-        name: 'Jeff Atwood',
-        quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
-      },
-      {
-        name: 'Jeff Atwood',
-        quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
-      }
-    ]
+    quotes: []
   },
   computed: {
     canLogin () {
@@ -50,13 +30,18 @@ new Vue({
       }
 
       return false;
-    }
+    },
+    config () {}
   },
   methods: {
     login () {
+      this.loading = true
       if (this.userform.email == 'bertlempens@gmail.com'
           && this.userform.password == 'secret') {
+        this.userform = { email: '', password: '' }
         this.token = 'thisisatest'
+        this.loading = false
+        this.getQuotes();
       }
     },
     addQuote () {
@@ -72,6 +57,33 @@ new Vue({
     },
     logout () {
       this.token = '';
+      this.quotes = [];
+    },
+    getQuotes () {
+      this.loading = true
+      this.quotes = [
+        {
+          name: 'Jeff Atwood',
+          quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
+        },
+        {
+          name: 'Jeff Atwood',
+          quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
+        },
+        {
+          name: 'Jeff Atwood',
+          quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
+        },
+        {
+          name: 'Jeff Atwood',
+          quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
+        },
+        {
+          name: 'Jeff Atwood',
+          quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
+        }
+      ]
+      this.loading = false
     }
   }
 })

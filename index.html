@@ -36,7 +36,7 @@
           </div>
           <div class="field">
             <div class="control">
-              <button :disabled="!canLogin" type="submit" class="button is-primary">Login</button>
+              <button :disabled="!canLogin" type="submit" class="button is-primary" :class="{ 'is-loading' : loading }">Login</button>
             </div>
           </div>
         </form>
@@ -68,6 +68,7 @@
           </footer>
         </div>
         <!-- QUOTES -->
+        <p v-if="loading">Loading...</p>
         <p v-if="!quotes.length" class="section">There are no quotes yet :(</p>
         <section class="quotes columns is-multiline">
           <div class="column is-one-third" v-for="quote in quotes">
