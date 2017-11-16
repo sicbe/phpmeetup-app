@@ -7,12 +7,10 @@ const QUOTE_URL = BASE_URL + 'quotes/'
 new Vue({
   el: '#app',
   created () {
-    if (localStorage.getItem('token') === null) {
-      localStorage.setItem('token', '')
-    } else if (localStorage.getItem('token') != '') {
+    if (localStorage.getItem('token')) {
       this.token = localStorage.getItem('token')
       this.getQuotes()
-    }
+    }      
   },
   data: {
     loading: false,
