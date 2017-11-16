@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
+    <link rel="stylesheet" href="./css/app.css">
+    <title>PHP Meetup App</title>
+  </head>
+
+  <body>
+    <section class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">PHP Meetup</h1>
+          <p class="subtitle">Inspirational quotes</p>
+        </div>
+      </div>
+    </section>
+    <div id="app" class="container">
+      <!-- LOGIN FORM -->
+      <section v-if="!token.length" class="section loginform">
+        <form @submit.prevent="login">
+          <div class="field">
+            <label for="email" class="label">Email</label>
+            <div class="control">
+              <input v-model="userform.email" type="email" name="email" id="email" class="input" required placeholder="bertlempens@gmail.com"> </div>
+          </div>
+          <div class="field">
+            <label for="password" class="label">Password</label>
+            <div class="control">
+              <input v-model="userform.password" type="password" name="password" id="password" class="input" required> </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button :disabled="!canLogin" type="submit" class="button is-primary">Login</button>
+            </div>
+          </div>
+        </form>
+      </section>
+      <!-- MAIN CONTENT -->
+      <section v-if="token.length" class="section main-content">
+        <!-- ADD QUOTE FORM -->
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">Add a new quote</p>
+          </header>
+          <div class="card-content">
+            <div class="field">
+              <label for="name" class="label">Name</label>
+              <div class="control">
+                <input v-model="newQuote.name" type="text" name="name" id="name" class="input"> </div>
+            </div>
+            <div class="field">
+              <label for="quote" class="label">Quote</label>
+              <div class="control">
+                <textarea v-model="newQuote.quote" name="quote" id="quote" class="textarea"></textarea>
+              </div>
+            </div>
+          </div>
+          <footer class="card-footer">
+            <a @click="addQuote" v-if="canAddQuote" class="card-footer-item">Add quote</a>
+            <span v-if="!canAddQuote" class="card-footer-item">Please fill in all fields</span>
+            <a @click="logout" class="card-footer-item">Logout</a>
+          </footer>
+        </div>
+        <!-- QUOTES -->
+        <p v-if="!quotes.length" class="section">There are no quotes yet :(</p>
+        <section class="quotes columns is-multiline">
+          <div class="column is-one-third" v-for="quote in quotes">
+            <article class="card">
+              <div class="card-content">
+                <p class="title">
+                  <q>{{ quote.quote }}</q>
+                </p>
+                <p class="subtitle">{{ quote.name }}</p>
+              </div>
+              <footer class="card-footer">
+                <a @click="deleteQuote(quote)" class="card-footer-item">Delete</a>
+              </footer>
+            </article>
+          </div>
+        </section>
+      </section>
+    </div>
+    
+    <!-- SCRIPTS -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="./js/app.js"></script>
+  </body>
+
+</html>
