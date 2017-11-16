@@ -6,13 +6,21 @@ const QUOTE_URL = BASE_URL + 'quotes/'
 
 new Vue({
   el: '#app',
+  created () {
+    if (localStorage.getItem('token') === null) {
+      localStorage.setItem('token', '')
+    } else if (localStorage.getItem('token') != '') {
+      this.token = localStorage.getItem('token')
+      this.getQuotes()
+    }
+  },
   data: {
     loading: false,
     userform: {
       email: '',
       password: ''
     },
-    // token: '',
+    token: '',
     newQuote: {
       name: '',
       quote: ''
@@ -34,9 +42,6 @@ new Vue({
 
       return false;
     },
-    token () {
-      return localStorage.getItem('token')
-    },
     config () {
       return {
         headers: {
@@ -52,7 +57,6 @@ new Vue({
       axios.post(LOGIN_URL, this.userform)
       .then(res=>{
         this.token = res.data.token
-        localStorage.setItem('token', this.token)
         this.userform = { email: '', password: '' } 
         this.loading = false
         this.getQuotes();
@@ -83,7 +87,6 @@ new Vue({
     },
     logout () {
       this.token = ''
-      localStorage.setItem('token', '')
       this.quotes = [];
     },
     getQuotes () {
@@ -91,6 +94,11 @@ new Vue({
       .then(res => {
         this.quotes = res.data
       })
+    }
+  },
+  watch: {
+    token: function (newToken) {
+      localStorage.setItem('token', newToken)
     }
   }
 })
