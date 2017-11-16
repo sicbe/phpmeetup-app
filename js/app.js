@@ -1,5 +1,7 @@
 
-const BASEURL = "http://phpmeetup-server.dev/api/";
+const BASE_URL = "http://phpmeetup-server.dev/api/"
+const LOGIN_URL = BASE_URL + 'login/'
+const QUOTE_URL = BASE_URL + 'quotes/'
 
 new Vue({
   el: '#app',
@@ -60,7 +62,6 @@ new Vue({
       this.quotes = [];
     },
     getQuotes () {
-      this.loading = true
       this.quotes = [
         {
           name: 'Jeff Atwood',
@@ -83,7 +84,6 @@ new Vue({
           quote: 'There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.'
         }
       ]
-      this.loading = false
     }
   }
 })
