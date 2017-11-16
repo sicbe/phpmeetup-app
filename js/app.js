@@ -1,5 +1,8 @@
 
-const BASEURL = "http://phpmeetup-server.dev/api";
+const BASE_URL = "http://phpmeetup-server.dev/api/"
+const LOGIN_URL = BASE_URL + 'login/'
+const QUOTE_URL = BASE_URL + 'quotes/'
+
 
 new Vue({
   el: '#app',
@@ -9,7 +12,7 @@ new Vue({
       email: '',
       password: ''
     },
-    token: '',
+    // token: '',
     newQuote: {
       name: '',
       quote: ''
@@ -31,6 +34,9 @@ new Vue({
 
       return false;
     },
+    token () {
+      return localStorage.getItem('token')
+    },
     config () {
       return {
         headers: {
@@ -43,9 +49,10 @@ new Vue({
     login () {
       this.loading = true
 
-      axios.post(BASEURL+'/login', this.userform)
+      axios.post(LOGIN_URL, this.userform)
       .then(res=>{
         this.token = res.data.token
+        localStorage.setItem('token', this.token)
         this.userform = { email: '', password: '' } 
         this.loading = false
         this.getQuotes();
@@ -56,7 +63,7 @@ new Vue({
       })
     },
     addQuote () {
-      axios.post(BASEURL+'/quotes', this.newQuote, this.config)
+      axios.post(QUOTE_URL, this.newQuote, this.config)
       .then(res => {
         console.log('added!')
       })
@@ -67,7 +74,7 @@ new Vue({
       }
     },
     deleteQuote (quote) {
-      axios.delete(BASEURL+'/quotes/'+quote.id, this.config)
+      axios.delete(QUOTE_URL+quote.id, this.config)
       .then(res => {
         console.log('deleted!')
       })
@@ -75,11 +82,12 @@ new Vue({
       this.quotes.splice(index, 1);
     },
     logout () {
-      this.token = '';
+      this.token = ''
+      localStorage.setItem('token', '')
       this.quotes = [];
     },
     getQuotes () {
-      axios.get(BASEURL+'/quotes', this.config)
+      axios.get(QUOTE_URL, this.config)
       .then(res => {
         this.quotes = res.data
       })
